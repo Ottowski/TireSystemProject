@@ -1,9 +1,6 @@
 package com.example.Grupp9.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity(name = "tyre")
@@ -18,8 +15,7 @@ public class Tyre {
     public Tyre() {
     }
 
-    public Tyre(Long id, String name, String type) {
-        this.id = id;
+    public Tyre(String type) {
         this.type = type;
     }
 }
