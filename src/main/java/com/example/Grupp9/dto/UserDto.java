@@ -2,6 +2,7 @@ package com.example.Grupp9.dto;
 
 
 import java.util.Collection;
+import java.util.List;
 
 public class UserDto {
     private String username;
@@ -27,8 +28,8 @@ public class UserDto {
         return username;
     }
 
-    public Collection<String> getRoles() {
-        return roles;
+    public List<String> getRoles() {
+        return (List<String>) roles;
     }
 
     public void setUsername(String username) {

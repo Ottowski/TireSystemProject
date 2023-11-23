@@ -2,13 +2,16 @@ package com.example.Grupp9.controller;
 
 
 
+import com.example.Grupp9.JwtConfig.JwtUtil;
+import com.example.Grupp9.dto.AuthenticationRequest;
+import com.example.Grupp9.dto.AuthenticationResponse;
 import com.example.Grupp9.dto.RegistrationUserDto;
 import com.example.Grupp9.model.User;
 
 
 import com.example.Grupp9.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,46 +22,45 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import java.util.Optional;
-
 @RestController
 @RequestMapping("/api")
 public class UserController {
 
     private final UserService userService;
+    private final JwtUtil jwtTokenService;
 
 
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, JwtUtil jwtTokenService) {
         this.userService = userService;
 
+        this.jwtTokenService = jwtTokenService;
     }
     // endpoint: /api/login
 
     // endpoint: /api/admin/login
 
 
-//    @PostMapping("/admin/login")
-//    public ResponseEntity<String> loginAdmin(@RequestParam String username, @RequestParam String password) {
-//        Optional<Admin> admin = adminService.loginAdmin(username, password);
-//        if (admin.isPresent()) {
-//            return ResponseEntity.ok("Admin login successful");
-//        } else {
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid admin credentials");
-//        }
-//    }
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody AuthenticationRequest authenticationRequest) {
+        AuthenticationResponse response = userService.login(authenticationRequest);
+        System.out.println(response);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.AUTHORIZATION, response.getJwt())
+                .body(response);
+    }
     // endpoint: /api/register
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@RequestBody RegistrationUserDto userDto) {
-        try {
-            System.out.println("user created");
-            userService.registerUser(userDto);
+    public ResponseEntity<User> createUserWithRole(@RequestBody RegistrationUserDto userRegistrationDTO) {
+        User savedUser = userService.registerUser(userRegistrationDTO);
+        // Issue a JWT token and include it in the response headers
+        var token = jwtTokenService.issueToken(userRegistrationDTO.getUsername(), userRegistrationDTO.getRoles().toString());
 
-            return ResponseEntity.ok("User registered successfully");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User registration failed");
-        }
+        return ResponseEntity.ok()
+                .header(HttpHeaders.AUTHORIZATION, token)
+                .body(savedUser);
+
     }
 
 
