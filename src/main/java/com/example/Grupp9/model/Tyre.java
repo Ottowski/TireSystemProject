@@ -8,6 +8,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
+
 @Entity
 @Table(name = "\"tyre\"")
 public class Tyre {
@@ -24,7 +25,10 @@ public class Tyre {
     public Tyre() {
     }
 
-    public Tyre(String type) {
-        this.type = type;
+    public Tyre(String tyre) {
+        this.type = tyre;
     }
+//    Tyre winterTyre = new Tyre("Winter");
+//    Tyre summerTyre = new Tyre("Summer");
+
 }
