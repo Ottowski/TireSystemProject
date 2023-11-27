@@ -62,6 +62,19 @@ public class UserController {
                 .body(savedUser);
 
     }
+    // endpoint: /api/update-password
+    @PutMapping("/update-password")
+    public ResponseEntity<String> updatePassword(@RequestParam String username, @RequestParam String newPassword) {
+        userService.updatePassword(username, newPassword);
+        return ResponseEntity.ok("Password updated successfully");
+    }
+
+    // endpoint: /api/update-username
+    @PutMapping("/update-username")
+    public ResponseEntity<String> updateUsername(@RequestParam String currentUsername, @RequestParam String newUsername) {
+        userService.updateUsername(currentUsername, newUsername);
+        return ResponseEntity.ok("Username updated successfully");
+    }
 
 
     @GetMapping("/allusers")
