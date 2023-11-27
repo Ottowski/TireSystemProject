@@ -47,7 +47,7 @@ public class UserService {
         user.setUsername(userDto.getUsername());
 //        userDto.getRoles().forEach(role -> user.getRoles().add(role));
         user.setRoles(userDto.getRoles());
-
+        user.setVehicles(userDto.getVehicles());
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         return userRepository.save(user);
     }
@@ -59,6 +59,29 @@ public class UserService {
         }
         return Optional.empty();
     }
+
+    public void updatePassword(String username, String newPassword) {
+        Optional<User> optionalUser = userRepository.findByUsername(username);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            user.setPassword(passwordEncoder.encode(newPassword));
+            userRepository.save(user);
+        } else {
+            throw new RuntimeException("User not found with username: " + username);
+        }
+    }
+
+    public void updateUsername(String currentUsername, String newUsername) {
+        Optional<User> optionalUser = userRepository.findByUsername(currentUsername);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            user.setUsername(newUsername);
+            userRepository.save(user);
+        } else {
+            throw new RuntimeException("User not found with username: " + currentUsername);
+        }
+    }
+
 
 
     public List<User> getAllUsers() {

@@ -29,6 +29,9 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
 
+    @ElementCollection
+    private List<String> vehicles;
+
 
 
     @ElementCollection(fetch = FetchType.EAGER)
