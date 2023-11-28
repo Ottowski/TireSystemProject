@@ -11,25 +11,16 @@ import java.util.List;
 
 @Service
 public class TyreService {
-
-    private final TyreRepository tyreRepository;
-
     @Autowired
-    public TyreService(TyreRepository tyreRepo) {
-        this.tyreRepository = tyreRepo;
-    }
+    private TyreRepository tyreRepository;
 
-    public List<Tyre> getAllTyres() {
+    public Tyre newTyre(Tyre tyre) {
+        return tyreRepository.save(tyre);
+    }
+    public List<Tyre> findAllTyres(){
         return tyreRepository.findAll();
     }
-
-    public ResponseEntity<String> newTyre(Tyre tyre, @RequestBody String type) {
-        try {
-            tyreRepository.save(new Tyre(type));
-            return ResponseEntity.ok("Tyre Created");
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Tyre creation failed");
-        }
-
+    public Tyre findTireById(Long id) {
+        return tyreRepository.findById(id).orElse(null);
     }
 }

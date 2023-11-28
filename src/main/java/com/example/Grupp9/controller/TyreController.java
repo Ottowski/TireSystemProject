@@ -3,11 +3,7 @@ package com.example.Grupp9.controller;
 import com.example.Grupp9.model.Tyre;
 import com.example.Grupp9.service.TyreService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,11 +20,25 @@ public class TyreController {
 
     @GetMapping("/tyres")
     public List<Tyre> getAllTyres() {
-        return tyreService.getAllTyres();
+        return tyreService.findAllTyres();
     }
 
     @PostMapping("/tyres")
-    public ResponseEntity<String> newTyre(Tyre tyre, String type) {
-        return tyreService.newTyre(tyre, type);
+    public Tyre newTyre(@RequestBody Tyre tyre) {
+        return tyreService.newTyre(tyre);
     }
+
+
+
+
+
+//    public ResponseEntity<String> newTyre(Tyre tyre, @RequestBody String type) {
+//        try {
+//            tyreRepository.save(new Tyre(type));
+//            return ResponseEntity.ok("Tyre Created");
+//        } catch (Exception e) {
+//            return ResponseEntity.badRequest().body("Tyre creation failed");
+//        }
+//
+//    }
 }
