@@ -57,9 +57,9 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(configure -> configure
                         .requestMatchers(HttpMethod.POST,"/api/register","/api/login").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/tyres").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/tyres").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/allusers").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/tyres").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/tyres", "/api/allusers").hasAuthority("ADMIN")
+
 
                         .anyRequest().authenticated())
                         .sessionManagement(sessionManagement -> sessionManagement
