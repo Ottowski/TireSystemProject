@@ -58,7 +58,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(configure -> configure
                         .requestMatchers(HttpMethod.POST,"/api/register","/api/login").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/tyres").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/tyres").hasAnyAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/tyres").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/allusers").permitAll()
 
                         .anyRequest().authenticated())
                         .sessionManagement(sessionManagement -> sessionManagement
@@ -75,6 +76,7 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }
+
 
 
 }

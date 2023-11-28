@@ -25,10 +25,4 @@ public class Tyre {
     public Tyre() {
     }
 
-    public Tyre(String tyre) {
-        this.type = tyre;
-    }
-//    Tyre winterTyre = new Tyre("Winter");
-//    Tyre summerTyre = new Tyre("Summer");
-
 }
