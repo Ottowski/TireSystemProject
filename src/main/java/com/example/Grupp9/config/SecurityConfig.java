@@ -58,8 +58,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(configure -> configure
                         .requestMatchers(HttpMethod.POST,"/api/register","/api/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/tyres").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/bookings").hasAuthority("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/tyres", "/api/allusers").hasAuthority("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/tyres").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/bookings").hasAuthority("ADMIN")
 
 
                         .anyRequest().authenticated())
