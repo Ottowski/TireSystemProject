@@ -1,6 +1,7 @@
 package com.example.Grupp9.controller;
 
 import com.example.Grupp9.model.Booking;
+import com.example.Grupp9.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +20,7 @@ public class BookingController {
 
     @GetMapping("/bookings")
     public List<Booking> getAllBookings() {
-        return bookingService.findAllTyres();
+        return bookingService.findAllBookings();
     }
 
     @PostMapping("/bookings")
