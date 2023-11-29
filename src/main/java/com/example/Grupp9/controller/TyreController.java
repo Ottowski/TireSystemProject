@@ -23,22 +23,21 @@ public class TyreController {
         return tyreService.findAllTyres();
     }
 
+    // URL: http://localhost:8081/api/tyres
+    // Token needed
+
     @PostMapping("/tyres")
     public Tyre newTyre(@RequestBody Tyre tyre) {
         return tyreService.newTyre(tyre);
     }
 
-
-
-
-
-//    public ResponseEntity<String> newTyre(Tyre tyre, @RequestBody String type) {
-//        try {
-//            tyreRepository.save(new Tyre(type));
-//            return ResponseEntity.ok("Tyre Created");
-//        } catch (Exception e) {
-//            return ResponseEntity.badRequest().body("Tyre creation failed");
-//        }
-//
-//    }
+    // URL: http://localhost:8081/api/tyres
+    // Token needed
+    /*
+        {
+	    "type": "Summer",
+	    "amount": 4,
+	    "price": 1.90
+	    }
+	*/
 }
