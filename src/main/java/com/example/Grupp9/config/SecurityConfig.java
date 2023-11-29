@@ -61,7 +61,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/tyres").hasAnyAuthority("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/tyres").hasAnyAuthority("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/allusers").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/registration","/login").permitAll()
+                        .request
 
                         .anyRequest().authenticated())
                         .sessionManagement(sessionManagement -> sessionManagement
