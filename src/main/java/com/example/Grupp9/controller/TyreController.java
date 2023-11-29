@@ -35,9 +35,9 @@ public class TyreController {
     // Token needed
     /*
         {
-	    "type": "Summer",
-	    "amount": 4,
-	    "price": 1.90
+	        "type": "Summer",
+	        "amount": 4,
+	        "price": 19.99
 	    }
 	*/
 }

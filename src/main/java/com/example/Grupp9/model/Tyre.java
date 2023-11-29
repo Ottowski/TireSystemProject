@@ -13,8 +13,6 @@ import lombok.Setter;
 @Table(name = "\"tyre\"")
 public class Tyre {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     private String type;
     private int amount;
     private double price;
