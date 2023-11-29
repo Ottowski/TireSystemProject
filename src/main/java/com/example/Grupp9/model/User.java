@@ -40,6 +40,9 @@ public class User implements UserDetails {
     @OneToMany
     private List<Tyre> tyres;
 
+    @OneToMany
+    private List<Booking> booking;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles.stream().map(r -> (GrantedAuthority) () -> r).collect(Collectors.toList());
