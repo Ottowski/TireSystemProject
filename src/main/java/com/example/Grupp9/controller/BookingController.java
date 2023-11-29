@@ -23,8 +23,20 @@ public class BookingController {
         return bookingService.findAllBookings();
     }
 
+    // URL: http://localhost:8081/api/bookings
+    // Token Needed
+
     @PostMapping("/bookings")
     public Booking newBooking(@RequestBody Booking booking) {
         return bookingService.newBooking(booking);
     }
+
+    // URL: http://localhost:8081/api/bookings
+    // Token Needed
+    /* EXAMPLE json:
+        {
+	        "amount": 4,
+	        "date": "2007-12-03T10:15:30"
+	    }
+	*/
 }
