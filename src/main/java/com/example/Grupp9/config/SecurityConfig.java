@@ -56,11 +56,12 @@ public class SecurityConfig {
                 .cors(withDefaults())
 
                 .authorizeHttpRequests(configure -> configure
-                        .requestMatchers(HttpMethod.POST,"/api/register","/api/login").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/api/register","/api/login","/register-web","login-web").permitAll()
 //                        .requestMatchers(HttpMethod.GET, "/api/tyres").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/tyres").hasAnyAuthority("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/tyres").hasAnyAuthority("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/allusers").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/registration","/login").permitAll()
 
                         .anyRequest().authenticated())
                         .sessionManagement(sessionManagement -> sessionManagement

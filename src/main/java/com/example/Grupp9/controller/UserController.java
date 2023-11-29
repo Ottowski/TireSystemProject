@@ -2,6 +2,7 @@ package com.example.Grupp9.controller;
 
 
 
+import ch.qos.logback.core.model.Model;
 import com.example.Grupp9.JwtConfig.JwtUtil;
 import com.example.Grupp9.dto.AuthenticationRequest;
 import com.example.Grupp9.dto.AuthenticationResponse;
@@ -83,6 +84,8 @@ public class UserController {
         return ResponseEntity.ok(allUsers);
 
     }
+
+
 
 }
 
