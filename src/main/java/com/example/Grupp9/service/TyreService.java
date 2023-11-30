@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TyreService {
@@ -15,12 +16,25 @@ public class TyreService {
     private TyreRepository tyreRepository;
 
     public Tyre newTyre(Tyre tyre) {
-        return tyreRepository.save(tyre);
+        // Check if a Tyre with the same type exists
+        Optional<Tyre> existingTyre = tyreRepository.findByType(tyre.getType());
+
+        if (existingTyre.isPresent()) {
+            // If the Tyre already exists, update the amount and save
+            Tyre oldTyre = existingTyre.get();
+            oldTyre.setAmount(oldTyre.getAmount() + tyre.getAmount());
+            return tyreRepository.save(oldTyre);
+        } else {
+            // If the Tyre does not exist, save the new Tyre
+            return tyreRepository.save(tyre);
+        }
     }
-    public List<Tyre> findAllTyres(){
+
+    public List<Tyre> findAllTyres() {
         return tyreRepository.findAll();
     }
-    public Tyre findTireById(Long id) {
-        return tyreRepository.findById(id).orElse(null);
+
+    public Tyre findTireByType(String type) {
+        return tyreRepository.findByType(type).orElse(null);
     }
 }
