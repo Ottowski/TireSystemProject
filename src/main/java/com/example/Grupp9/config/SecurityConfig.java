@@ -55,7 +55,6 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .cors(withDefaults())
 
-                .authorizeHttpRequests(configure -> configure
                         .requestMatchers(HttpMethod.POST,"/api/register","/api/login","/register-web","login-web").permitAll()
 //                        .requestMatchers(HttpMethod.GET, "/api/tyres").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/tyres").hasAnyAuthority("ADMIN")
