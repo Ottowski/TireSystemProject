@@ -56,9 +56,9 @@ public class SecurityConfig {
                 .cors(withDefaults())
 
                 .authorizeHttpRequests(configure -> configure
-                        .requestMatchers(HttpMethod.POST,"/api/register","/api/login","/register-web","/login-web").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/api/register","/api/login","/register-web","/login-web", "/api/bookings").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/tyres","/registration","/login", "/api/allusers").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/tyres", "/api/bookings").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/tyres").hasAuthority("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/tyres", "/api/bookings").hasAuthority("ADMIN")
 
 

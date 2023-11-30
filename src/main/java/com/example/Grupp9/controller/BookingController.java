@@ -35,8 +35,9 @@ public class BookingController {
     // Token Needed
     /* EXAMPLE json:
         {
-	        "amount": 4,
-	        "date": "2007-12-03T10:15:30"
-	    }
+	"type": "Winter",
+	"amount": 4,
+	"date": "2007-12-03T10:15:30"
+}
 	*/
 }
