@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Registration</title>
+</head>
+<body>
+<div>
+  <p th:text="${message}"></p>
+</div>
+
+<h2>Registration Form</h2>
+<form action="/register-web" method="post">
+  <div>
+    <label for="username">User name:</label>
+    <input type="text" id="username" name="username" required>
+  </div>
+  <div>
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" required>
+  </div>
+  <div>
+    <label for="roles">Role:</label>
+    <select id="roles" name="roles">
+      <option value="USER">User</option>
+      <option value="ADMIN">Admin</option>
+    </select>
+  </div>
+  <div>
+    <input type="submit" value="Registration">
+  </div>
+</form>
+</body>
+</html>
