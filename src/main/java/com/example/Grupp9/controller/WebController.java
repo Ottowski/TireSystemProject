@@ -44,5 +44,5 @@ public class WebController {
     @PostMapping("login-web")
     public String loginUserWeb(@ModelAttribute AuthenticationRequest authenticationRequest, Model model) {
         return "redirect:/api/allusers";
-    }
+    } // Efter att man har loggat in behöver man token för att se all users ?
 }

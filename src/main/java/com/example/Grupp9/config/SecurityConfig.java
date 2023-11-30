@@ -55,18 +55,18 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .cors(withDefaults())
 
-                        .requestMatchers(HttpMethod.POST,"/api/register","/api/login","/register-web","login-web").permitAll()
-//                        .requestMatchers(HttpMethod.GET, "/api/tyres").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/tyres").hasAnyAuthority("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/api/tyres").hasAnyAuthority("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/api/allusers").permitAll()
-                        .request
+                .authorizeHttpRequests(configure -> configure
+                        .requestMatchers(HttpMethod.POST,"/api/register","/api/login","/register-web","/login-web").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/tyres","/registration","/login", "/api/allusers").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/tyres", "/api/bookings").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/tyres", "/api/bookings").hasAuthority("ADMIN")
+
 
                         .anyRequest().authenticated())
-                        .sessionManagement(sessionManagement -> sessionManagement
-                                .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                        .authenticationProvider(authenticationProvider(CustomUserDetailsService, passwordEncoder()))
-                        .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .sessionManagement(sessionManagement -> sessionManagement
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authenticationProvider(authenticationProvider(CustomUserDetailsService, passwordEncoder()))
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
 
         return http.build();
