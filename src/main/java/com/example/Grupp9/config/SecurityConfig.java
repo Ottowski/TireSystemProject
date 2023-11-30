@@ -54,13 +54,11 @@ public class SecurityConfig {
 
         http.csrf(AbstractHttpConfigurer::disable)
                 .cors(withDefaults())
-
                 .authorizeHttpRequests(configure -> configure
-                        .requestMatchers(HttpMethod.POST,"/api/register","/api/login").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/tyres").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/api/register","/api/login","/register-web","/login-web").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/tyres","/registration","/login", "/api/allusers").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/tyres", "/api/bookings").hasAuthority("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/api/tyres", "/api/allusers", "/api/bookings").hasAuthority("ADMIN")
-
+                        .requestMatchers(HttpMethod.GET, "/api/tyres", "/api/bookings").hasAuthority("ADMIN")
 
                         .anyRequest().authenticated())
                         .sessionManagement(sessionManagement -> sessionManagement
