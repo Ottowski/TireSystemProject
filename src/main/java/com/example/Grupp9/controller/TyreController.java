@@ -40,4 +40,9 @@ public class TyreController {
 	        "price": 19.99
 	    }
 	*/
+
+    @PutMapping("/tyres/{type}")
+    public Tyre updateTyre(@PathVariable String type, @RequestBody Tyre tyre) {
+        return tyreService.updateNewTyre(type, tyre);
+    }
 }

@@ -17,8 +17,8 @@ public class Tyre {
     private int amount;
     private double price;
 
-    @ManyToOne
-    private User user;
+//    @ManyToOne
+//    private User user;
 
     public Tyre() {
     }
