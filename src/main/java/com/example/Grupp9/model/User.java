@@ -37,10 +37,10 @@ public class User implements UserDetails {
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles;
 
-    @OneToMany
-    private List<Tyre> tyres;
+//    @OneToMany
+//    private List<Tyre> tyres;
 
-    @OneToMany
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Booking> booking;
 
     @Override
@@ -67,5 +67,7 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+
 
 }

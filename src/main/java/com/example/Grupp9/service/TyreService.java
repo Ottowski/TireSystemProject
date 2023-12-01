@@ -1,7 +1,9 @@
 package com.example.Grupp9.service;
 
 import com.example.Grupp9.model.Tyre;
+import com.example.Grupp9.model.User;
 import com.example.Grupp9.repository.TyreRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -36,5 +38,23 @@ public class TyreService {
 
     public Tyre findTireByType(String type) {
         return tyreRepository.findByType(type).orElse(null);
+    }
+
+    public Tyre updateNewTyre(String type, Tyre tyre) {
+        Optional<Tyre> tyreOptional = tyreRepository.findByType(type);
+
+        Tyre tyre1 = tyreOptional.get();
+
+        Tyre tyre2 = new Tyre();
+
+        var addedAmount = tyre.getAmount() + tyre1.getAmount();
+
+        tyre2.setType(tyre.getType());
+        tyre2.setAmount(addedAmount);
+        tyre2.setPrice(tyre.getPrice());
+
+
+        return tyreRepository.save(tyre2);
+
     }
 }
