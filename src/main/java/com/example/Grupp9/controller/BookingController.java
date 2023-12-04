@@ -1,5 +1,6 @@
 package com.example.Grupp9.controller;
 
+import com.example.Grupp9.JwtConfig.JwtUtil;
 import com.example.Grupp9.model.Booking;
 import com.example.Grupp9.model.Tyre;
 import com.example.Grupp9.model.User;
@@ -22,11 +23,14 @@ public class BookingController {
 
     private final TyreRepository tyreRepository;
 
+    private final JwtUtil jwtUtil;
+
     @Autowired
-    public BookingController(BookingService bookingService, UserRepo userRepo, TyreRepository tyreRepository) {
+    public BookingController(BookingService bookingService, UserRepo userRepo, TyreRepository tyreRepository, JwtUtil jwtUtil) {
         this.bookingService = bookingService;
         this.userRepo = userRepo;
         this.tyreRepository = tyreRepository;
+        this.jwtUtil = jwtUtil;
     }
 
     @GetMapping("/bookings")
@@ -52,16 +56,29 @@ public class BookingController {
 }
 	*/
 
-    @PostMapping("/booking/{userId}/{tyreType}")
-    public ResponseEntity<String> bookingUser(@PathVariable Long userId, @PathVariable String tyreType, @RequestBody Booking booking){
+    @PostMapping("/booking/{tyreType}")
+    public ResponseEntity<String> bookingUser(@RequestHeader("Authorization") String userId, @PathVariable String tyreType, @RequestBody Booking booking){
 
-        User user = userRepo.findById(userId)
+        userId = userId.substring(7);
+        var token = jwtUtil.getSubject(userId);
+
+        User user = userRepo.findByUsername(token)
                 .orElseThrow(()-> new EntityNotFoundException("User Not Found"));
 
         Tyre tyre = tyreRepository.findByType(tyreType)
                 .orElseThrow(()-> new EntityNotFoundException("User Not Found"));
 
         bookingService.createNewBooking(user, tyre, booking);
+
+        return ResponseEntity.ok("Booking successful");
+
+    }
+
+    @DeleteMapping("/booking/{id}")
+    public ResponseEntity<String> deleteBookingFromDB(@PathVariable Long id){
+
+                bookingService.deleteBooking(id);
+
 
         return ResponseEntity.ok("Booking successful");
 
