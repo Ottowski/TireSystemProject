@@ -60,8 +60,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/tyres","/registration","/login","/home","/api/available-tyres", "/api/bookings").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/allusers").hasAnyAuthority("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/api/tyres").hasAuthority("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/api/tyres").hasAuthority("ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/api/tyres/**").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/tyres", "/api/allusers").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/booking/**").hasAuthority("ADMIN")
 
 
                         .anyRequest().authenticated())

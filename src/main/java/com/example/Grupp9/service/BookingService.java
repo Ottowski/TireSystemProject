@@ -78,6 +78,11 @@ public class BookingService {
     public Booking findBookingById(Long id) {
         return bookingRepository.findById(id).orElse(null);
     }
+
+    public void deleteBooking(Long id) {
+
+        bookingRepository.deleteById(id);
+    }
 }
 
 
