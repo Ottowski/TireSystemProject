@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Home Page</title>
     <!-- länkar CSS -->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+
 </head>
 <body>
 <header>
@@ -73,9 +75,11 @@
         e.preventDefault();
 
         const data = {
-            tyre: document.getElementById('tyre').value,
-            amount: document.getElementById('amount').value,
-            date: document.getElementById('date').value
+        amount: document.getElementById('amount').value,
+        date: document.getElementById('date').value,
+        tyre: {
+            type: document.getElementById('tyre').options[document.getElementById('tyre').selectedIndex].text
+        }
         };
 
         fetch('/api/create-booking', {
