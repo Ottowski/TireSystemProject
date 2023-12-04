@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home Page</title>
+    <!-- länkar CSS -->
+</head>
+<body>
+<header>
+    <h1>Welcome to Our Booking System</h1>
+    <!-- NavBar -->
+    <nav>
+        <ul>
+            <li><a href="/profile">Profile</a></li>
+            <li><a href="/logout">Logout</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main>
+    <!-- Form -->
+    <section>
+        <h2>Book an Appointment</h2>
+        <form id="booking-form" method="post" action="/api/create-booking">
+            <label for="tyre">Choose a Tyre:</label>
+            <select name="tyre" id="tyre">
+            </select><br>
+
+            <label for="amount">Amount:</label>
+            <input type="number" id="amount" name="amount" min="1"><br>
+
+            <label for="date">Date and Time:</label>
+            <input type="datetime-local" id="date" name="date"><br>
+
+            <input type="submit" value="Book Now">
+
+        </form>
+
+        <!--  Extra kod-->
+    </section>
+
+    <!-- Services -->
+    <section>
+        <h2>Available Services</h2>
+        <ul id="services-list">
+        </ul>
+    </section>
+</main>
+
+<footer>
+    <p>© 2023 Booking System</p>
+</footer>
+
+<!-- länkar JavaScript -->
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        fetch('/api/available-tyres')
+        .then(response => response.json())
+        .then(tyres => {
+            const select = document.getElementById('tyre');
+            tyres.forEach(tyre => {
+                const option = document.createElement('option');
+                option.value = tyre.id;
+                option.textContent = tyre.type;
+                select.appendChild(option);
+            });
+        });
+    });
+
+    // Skapa Booking här nere
+    document.getElementById('booking-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const data = {
+            tyre: document.getElementById('tyre').value,
+            amount: document.getElementById('amount').value,
+            date: document.getElementById('date').value
+        };
+
+        fetch('/api/create-booking', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Booking created:', data);
+
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    });
+</script>
+
+</body>
+</html>

@@ -74,6 +74,28 @@ public class BookingController {
 
     }
 
+    @GetMapping("/available-tyres")
+    public ResponseEntity<List<Tyre>> getAvailableTyres() {
+        List<Tyre> tyres = tyreRepository.findAll();
+        return ResponseEntity.ok(tyres);
+    }
+@PostMapping("/create-booking")
+public ResponseEntity<?> createBooking(@RequestBody Booking booking) {
+    Tyre tyre = tyreRepository.findByType(booking.getTyre().getType())
+            .orElseThrow(() -> new EntityNotFoundException("Tyre not found"));
+    booking.setTyre(tyre);
+    bookingService.save(booking);
+    return ResponseEntity.ok("Booking created successfully");
+}
+
+//    {
+//        "amount": 4,
+//            "date": "2024-12-05T12:00",
+//            "tyre": {
+//        "type": "Summer"
+//    }
+//    }
+
     @DeleteMapping("/booking/{id}")
     public ResponseEntity<String> deleteBookingFromDB(@PathVariable Long id){
 

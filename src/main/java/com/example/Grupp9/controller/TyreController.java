@@ -3,6 +3,7 @@ package com.example.Grupp9.controller;
 import com.example.Grupp9.model.Tyre;
 import com.example.Grupp9.service.TyreService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -45,4 +46,8 @@ public class TyreController {
     public Tyre updateTyre(@PathVariable String type, @RequestBody Tyre tyre) {
         return tyreService.updateNewTyre(type, tyre);
     }
+
+
+
+
 }

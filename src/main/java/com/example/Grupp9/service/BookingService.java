@@ -67,6 +67,9 @@ public class BookingService {
 
 
     }
+    public Booking save(Booking booking) {
+        return bookingRepository.save(booking);
+    }
 
     public List<Booking> findAllBookings() {
         return bookingRepository.findAll();
@@ -81,3 +84,5 @@ public class BookingService {
         bookingRepository.deleteById(id);
     }
 }
+
+

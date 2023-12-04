@@ -2,6 +2,7 @@ package com.example.Grupp9.controller;
 import ch.qos.logback.core.model.Model;
 import com.example.Grupp9.dto.AuthenticationRequest;
 import com.example.Grupp9.dto.RegistrationUserDto;
+import com.example.Grupp9.model.Booking;
 import com.example.Grupp9.model.User;
 import com.example.Grupp9.service.UserService;
 import lombok.extern.java.Log;
@@ -43,6 +44,20 @@ public class WebController {
 
     @PostMapping("login-web")
     public String loginUserWeb(@ModelAttribute AuthenticationRequest authenticationRequest, Model model) {
-        return "redirect:/api/allusers";
+        return "redirect:/home";
     } // Efter att man har loggat in behöver man token för att se all users ?
+
+    @GetMapping("/home")
+    public String home() {
+        logger.info("Home page requested");
+        return "home";
+    }
+
+    @PostMapping("/book-appointment")
+    public String bookAppointment(@ModelAttribute Booking booking) {
+        // logik för lagring av booking
+        logger.info("Booking request: " + booking.toString());
+        return "redirect:/home";
+    }
+
 }
