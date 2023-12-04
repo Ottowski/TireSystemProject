@@ -46,23 +46,19 @@ public class JwtUtil {
     }
 
 
-    //    It allows us to validate a token and return the subject. (The subject is the username in our case.)
-    private Claims getClaims(String token) {
 
+    public String getSubject(String token) {
+        return getClaims(token).getSubject();
+    }
+
+    //    Extracts the subject from the token.
+    private Claims getClaims(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(getKey())
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
     }
-
-
-//    Extracts the subject from the token.
-
-    public String getSubject(String token) {
-        return getClaims(token).getSubject();
-    }
-
 
     //    Generates a key for the token.
     private Key getKey() {

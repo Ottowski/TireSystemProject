@@ -11,13 +11,13 @@ import java.util.List;
 public class RegistrationUserDto {
     private String username;
     private String password;
-    private List<String> roles;
+    private String roles;
     private List<String> vehicles;
 
     public RegistrationUserDto() {
     }
 
-    public RegistrationUserDto(String username, String password, List<String> roles, List<String> vehicles) {
+    public RegistrationUserDto(String username, String password, String roles, List<String> vehicles) {
         this.username = username;
         this.password = password;
         this.roles = roles;

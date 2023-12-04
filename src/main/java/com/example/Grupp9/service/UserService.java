@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import com.example.Grupp9.dto.RegistrationUserDto;
 
 
+import java.util.Collections;
 import java.util.List;
 
 import java.util.Optional;
@@ -46,7 +47,7 @@ public class UserService {
         User user = new User();
         user.setUsername(userDto.getUsername());
 //        userDto.getRoles().forEach(role -> user.getRoles().add(role));
-        user.setRoles(userDto.getRoles());
+        user.setRoles(Collections.singletonList(userDto.getRoles()));
         user.setVehicles(userDto.getVehicles());
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         return userRepository.save(user);
