@@ -1,7 +1,6 @@
 package com.example.Grupp9.controller;
 
 import com.example.Grupp9.JwtConfig.JwtUtil;
-import com.example.Grupp9.exception.NotFoundException;
 import com.example.Grupp9.model.Booking;
 import com.example.Grupp9.model.Tyre;
 import com.example.Grupp9.model.User;
@@ -79,22 +78,13 @@ public class BookingController {
         List<Tyre> tyres = tyreRepository.findAll();
         return ResponseEntity.ok(tyres);
     }
-<<<<<<< Updated upstream
-@PostMapping("/create-booking")
-public ResponseEntity<?> createBooking(@RequestBody Booking booking) {
-    Tyre tyre = tyreRepository.findByType(booking.getTyre().getType())
-            .orElseThrow(() -> new EntityNotFoundException("Tyre not found"));
-    booking.setTyre(tyre);
-    bookingService.save(booking);
-    return ResponseEntity.ok("Booking created successfully");
-}
+
 //logga in sedan http://localhost:8081/api/booking/Winter
 //    {
 //        "amount": 4
 //    }
 //
-=======
->>>>>>> Stashed changes
+
 
     @DeleteMapping("/booking/{id}")
     public ResponseEntity<String> deleteBookingFromDB(@PathVariable Long id) {

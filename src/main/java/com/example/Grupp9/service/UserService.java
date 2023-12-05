@@ -4,13 +4,9 @@ import com.example.Grupp9.JwtConfig.JwtUtil;
 import com.example.Grupp9.dto.AuthenticationRequest;
 import com.example.Grupp9.dto.AuthenticationResponse;
 import com.example.Grupp9.dto.UserDto;
-<<<<<<< Updated upstream
-import com.example.Grupp9.model.Booking;
-=======
 import com.example.Grupp9.exception.ExistsEmailException;
 import com.example.Grupp9.exception.InvalidCredentialsException;
 import com.example.Grupp9.exception.NotFoundException;
->>>>>>> Stashed changes
 import com.example.Grupp9.model.User;
 import com.example.Grupp9.repository.UserRepo;
 
@@ -130,10 +126,6 @@ public class UserService {
 
     }
 
-    public User getUserById(Long id) {
-        Optional<User> user = userRepository.findById(id);
-        return user.get();
-    }
 
 //    http://localhost:8081/api/users/1
 }

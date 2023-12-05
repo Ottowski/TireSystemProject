@@ -1,5 +1,5 @@
 package com.example.Grupp9.controller;
-import ch.qos.logback.core.model.Model;
+
 import com.example.Grupp9.JwtConfig.JwtUtil;
 import com.example.Grupp9.dto.AuthenticationRequest;
 import com.example.Grupp9.dto.AuthenticationResponse;
@@ -10,25 +10,22 @@ import com.example.Grupp9.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 @RestController
 @RequestMapping("/api")
 public class UserController {
     private final UserService userService;
     private final JwtUtil jwtTokenService;
+
     @Autowired
     public UserController(UserService userService, JwtUtil jwtTokenService) {
         this.userService = userService;
 
         this.jwtTokenService = jwtTokenService;
     }
+
     // endpoint: http://localhost:8081/api/login
     /* {
        "username":  "test@test.com"
@@ -56,7 +53,7 @@ public class UserController {
     public ResponseEntity<User> createUserWithRole(@RequestBody RegistrationUserDto userRegistrationDTO) {
         User savedUser = userService.registerUser(userRegistrationDTO);
         // Issue a JWT token and include it in the response headers
-        var token = jwtTokenService.issueToken(userRegistrationDTO.getUsername(), userRegistrationDTO.getRoles().toString());
+        var token = jwtTokenService.issueToken(userRegistrationDTO.getUsername(), userRegistrationDTO.getRoles());
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.AUTHORIZATION, token)
@@ -96,12 +93,7 @@ public class UserController {
 
     }
 
-<<<<<<< Updated upstream
-    @GetMapping("/users/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id) {
-        var user = userService.getUserById(id);
-        return ResponseEntity.ok().body(user);
-=======
+
     @GetMapping("/user/{id}")
     public ResponseEntity<User> getUserById(@PathVariable String id) {
         try {
@@ -111,7 +103,5 @@ public class UserController {
         } catch (NumberFormatException e) {
             throw new HandleMethodArgumentNotValid("ID IS NOT VALID " + e.getMessage());
         }
->>>>>>> Stashed changes
-
     }
 }

@@ -1,5 +1,6 @@
 package com.example.Grupp9.service;
 
+import com.example.Grupp9.exception.HandleMethodArgumentNotValid;
 import com.example.Grupp9.exception.NotFoundException;
 import com.example.Grupp9.model.Booking;
 import com.example.Grupp9.model.Tyre;
@@ -31,21 +32,26 @@ public class BookingService {
         var newTyre = new Tyre();
 
         //        get tyre from db
-        newTyre.setAmount(newTyre.getAmount() - book.getAmount());
-        newTyre.setType(tyre.getType());
-        newTyre.setPrice(tyre.getPrice());
+        if(tyre.getAmount() >= book.getAmount()) {
+            newTyre.setAmount(tyre.getAmount() - book.getAmount());
 
-        //        set booking object
-        booking.setAmount(book.getAmount());
-        booking.setTyre(newTyre);
-        booking.setTotalPrice(newTyre.getPrice() * book.getAmount());
-        booking.setDate(LocalDateTime.now());
+            newTyre.setType(tyre.getType());
+            newTyre.setPrice(tyre.getPrice());
 
-        //        set user object and add booking to user
-        booking.setUser(user);
-        booking.setTyre(tyre);
-        user.getBooking().add(booking);
+            //        set booking object
+            booking.setAmount(book.getAmount());
+            booking.setTyre(newTyre);
+            booking.setTotalPrice(newTyre.getPrice() * book.getAmount());
+            booking.setDate(LocalDateTime.now());
 
+            //        set user object and add booking to user
+            booking.setUser(user);
+            booking.setTyre(tyre);
+            tyreRepository.save(newTyre);
+            user.getBooking().add(booking);
+        }else {
+            throw new HandleMethodArgumentNotValid("We don't have this amount " + book.getAmount());
+        }
         //        save booking
         bookingRepository.save(booking);
 

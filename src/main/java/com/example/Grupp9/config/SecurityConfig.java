@@ -65,7 +65,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST,"/api/register","/api/login","/register-web","/login-web", "/api/booking","/api/book-appointment","/api/create-booking","/profile","/home").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/tyres","/registration","/login","/api/available-tyres", "/api/bookings","/css/**","css/js/**", "/static/css/js/**", "/images/**","/profile","/home").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/tyres").hasAuthority("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/api/tyres", "/api/allusers").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/bookings","/api/allusers").hasAuthority("ADMIN")
 //                        .requestMatchers(HttpMethod.POST, "/api/booking/**").hasAuthority("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/api/booking/**").hasAuthority("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/booking/**").permitAll()
