@@ -91,4 +91,11 @@ public class UserController {
         return ResponseEntity.ok(allUsers);
 
     }
+
+    @GetMapping("/users/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable Long id) {
+        var user = userService.getUserById(id);
+        return ResponseEntity.ok().body(user);
+
+    }
 }

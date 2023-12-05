@@ -13,11 +13,17 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
+
+    private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
+
+
 
     private final JwtUtil jwtUtil;
     private final UserDetailsService userService;
@@ -27,6 +33,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         this.userService = userService;
     }
 
+
+
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request,
                                     @NonNull HttpServletResponse response,
@@ -35,9 +43,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 //        This is to avoid re-authentication on every request to our API
         String authorizationHeader = request.getHeader("Authorization");
+        logger.debug("Authorization Header: {}", authorizationHeader);
 
 //        if the user is already authenticated, we can skip the authentication process
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+            logger.debug("No JWT token found, proceeding without authentication");
             filterChain.doFilter(request, response);
             return;
         }
@@ -61,7 +71,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
         }
         filterChain.doFilter(request, response);
+
+
     }
 
+
 }
+
 

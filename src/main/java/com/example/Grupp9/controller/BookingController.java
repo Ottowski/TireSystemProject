@@ -87,14 +87,11 @@ public ResponseEntity<?> createBooking(@RequestBody Booking booking) {
     bookingService.save(booking);
     return ResponseEntity.ok("Booking created successfully");
 }
-
+//logga in sedan http://localhost:8081/api/booking/Winter
 //    {
-//        "amount": 4,
-//            "date": "2024-12-05T12:00",
-//            "tyre": {
-//        "type": "Summer"
+//        "amount": 4
 //    }
-//    }
+//
 
     @DeleteMapping("/booking/{id}")
     public ResponseEntity<String> deleteBookingFromDB(@PathVariable Long id){

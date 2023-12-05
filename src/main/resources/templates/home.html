@@ -82,10 +82,11 @@
         }
         };
 
-        fetch('/api/create-booking', {
+         fetch('/api/create-booking', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + getToken()
             },
             body: JSON.stringify(data)
         })
@@ -97,11 +98,11 @@
         })
         .then(data => {
             console.log('Booking created:', data);
-
         })
         .catch((error) => {
             console.error('Error:', error);
         });
+
     });
 </script>
 
