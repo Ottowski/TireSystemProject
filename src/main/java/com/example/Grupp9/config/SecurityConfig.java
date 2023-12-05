@@ -2,6 +2,7 @@ package com.example.Grupp9.config;
 
 import com.example.Grupp9.JwtConfig.JwtAuthenticationFilter;
 import com.example.Grupp9.auth.CustomUserDetailsService;
+import com.example.Grupp9.exception.DelegatingAuthenticationEntryPoint;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,8 +18,10 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -30,9 +33,12 @@ public class SecurityConfig {
     private final CustomUserDetailsService CustomUserDetailsService;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    public SecurityConfig(CustomUserDetailsService CustomUserDetailsService, JwtAuthenticationFilter jwtAuthenticationFilter) {
+    private final HandlerExceptionResolver handlerExceptionResolver;
+
+    public SecurityConfig(CustomUserDetailsService CustomUserDetailsService, JwtAuthenticationFilter jwtAuthenticationFilter, HandlerExceptionResolver handlerExceptionResolver) {
         this.CustomUserDetailsService = CustomUserDetailsService;
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+        this.handlerExceptionResolver = handlerExceptionResolver;
     }
 
 
@@ -70,8 +76,9 @@ public class SecurityConfig {
                 .sessionManagement(sessionManagement -> sessionManagement
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider(CustomUserDetailsService, passwordEncoder()))
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling(exceptionHandling -> exceptionHandling.authenticationEntryPoint(authenticationEntryPoint())
+                );
 
         return http.build();
     }
@@ -82,5 +89,9 @@ public class SecurityConfig {
         return configuration.getAuthenticationManager();
     }
 
+    @Bean
+    public AuthenticationEntryPoint authenticationEntryPoint() {
+        return new DelegatingAuthenticationEntryPoint(handlerExceptionResolver);
+    }
 
 }

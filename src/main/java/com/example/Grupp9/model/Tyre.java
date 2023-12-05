@@ -16,11 +16,23 @@ public class Tyre {
     private String type;
     private int amount;
     private double price;
-
-//    @ManyToOne
-//    private User user;
-
     public Tyre() {
     }
 
+
+    public Tyre(String type, int amount, double price) {
+        this.type = type;
+        this.amount = amount;
+        this.price = price;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Tyre{" +
+                "type='" + type + '\'' +
+                ", amount=" + amount +
+                ", price=" + price +
+                '}';
+    }
 }

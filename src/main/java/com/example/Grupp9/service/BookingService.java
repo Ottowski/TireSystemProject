@@ -1,5 +1,6 @@
 package com.example.Grupp9.service;
 
+import com.example.Grupp9.exception.NotFoundException;
 import com.example.Grupp9.model.Booking;
 import com.example.Grupp9.model.Tyre;
 import com.example.Grupp9.model.User;
@@ -10,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class BookingService {
@@ -23,64 +23,41 @@ public class BookingService {
         this.tyreRepository = tyreRepository;
     }
 
-//    public Booking newBooking(Booking booking) {
-//        Optional<Tyre> tyreOptional = tyreRepository.findByType(booking.getType());
-//
-//        if (tyreOptional.isPresent()) {
-//            Tyre tyre = tyreOptional.get();
-//            int remainingTyreAmount = tyre.getAmount() - booking.getAmount();
-//
-//            if (remainingTyreAmount >= 0) {
-//                // If enough tyres, update tyre amount and save booking
-//                tyre.setAmount(remainingTyreAmount);
-//                tyreRepository.save(tyre);
-//                return bookingRepository.save(booking);
-//            } else {
-//                throw new RuntimeException("Not enough tyres available for booking");
-//            }
-//        } else {
-//            throw new RuntimeException("Tyre not found for booking type: " + booking.getType());
-//        }
-//    }
 
     public void createNewBooking(User user, Tyre tyre, Booking book) {
+        //        create new booking object
         Booking booking = new Booking();
-        Optional<Tyre> tyreOptional = tyreRepository.findByType(tyre.getType());
+       //        create new tyre object
+        var newTyre = new Tyre();
 
-        Tyre tyre1 = tyreOptional.get();
+        //        get tyre from db
+        newTyre.setAmount(newTyre.getAmount() - book.getAmount());
+        newTyre.setType(tyre.getType());
+        newTyre.setPrice(tyre.getPrice());
 
-        tyre1.setAmount(tyre1.getAmount() - book.getAmount());
-        tyre1.setType(tyre.getType());
-        tyre1.setPrice(tyre.getPrice());
-
+        //        set booking object
         booking.setAmount(book.getAmount());
-        booking.setTyre(tyre1);
-        booking.setTotalPrice(tyre1.getPrice() * book.getAmount());
+        booking.setTyre(newTyre);
+        booking.setTotalPrice(newTyre.getPrice() * book.getAmount());
         booking.setDate(LocalDateTime.now());
 
+        //        set user object and add booking to user
         booking.setUser(user);
         booking.setTyre(tyre);
-
         user.getBooking().add(booking);
 
+        //        save booking
         bookingRepository.save(booking);
 
 
-    }
-    public Booking save(Booking booking) {
-        return bookingRepository.save(booking);
     }
 
     public List<Booking> findAllBookings() {
         return bookingRepository.findAll();
     }
 
-    public Booking findBookingById(Long id) {
-        return bookingRepository.findById(id).orElse(null);
-    }
 
     public void deleteBooking(Long id) {
-
         bookingRepository.deleteById(id);
     }
 }

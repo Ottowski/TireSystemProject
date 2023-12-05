@@ -1,6 +1,7 @@
 package com.example.Grupp9.controller;
 
 import com.example.Grupp9.JwtConfig.JwtUtil;
+import com.example.Grupp9.exception.NotFoundException;
 import com.example.Grupp9.model.Booking;
 import com.example.Grupp9.model.Tyre;
 import com.example.Grupp9.model.User;
@@ -46,28 +47,27 @@ public class BookingController {
 //        return bookingService.newBooking(booking);
 //    }
 
-    // URL: http://localhost:8081/api/bookings
+    // URL: http://localhost:8081/api/booking/{tyreType}
     // Token Needed
     /* EXAMPLE json:
         {
-	"type": "Winter",
-	"amount": 4,
-	"date": "2007-12-03T10:15:30"
-}
+            "amount": 4
+        }
 	*/
 
     @PostMapping("/booking/{tyreType}")
-    public ResponseEntity<String> bookingUser(@RequestHeader("Authorization") String userId, @PathVariable String tyreType, @RequestBody Booking booking){
+    public ResponseEntity<String> bookingUser(@RequestHeader("Authorization") String userId, @PathVariable String tyreType, @RequestBody Booking booking) {
 
         userId = userId.substring(7);
         var token = jwtUtil.getSubject(userId);
 
         User user = userRepo.findByUsername(token)
-                .orElseThrow(()-> new EntityNotFoundException("User Not Found"));
+                .orElseThrow(() -> new EntityNotFoundException("User Not Found"));
 
         Tyre tyre = tyreRepository.findByType(tyreType)
-                .orElseThrow(()-> new EntityNotFoundException("User Not Found"));
+                .orElseThrow(() -> new EntityNotFoundException("Tyre Not Found"));
 
+        System.out.println("tyre: ✌️ " + tyre.toString());
         bookingService.createNewBooking(user, tyre, booking);
 
         return ResponseEntity.ok("Booking successful");
@@ -79,6 +79,7 @@ public class BookingController {
         List<Tyre> tyres = tyreRepository.findAll();
         return ResponseEntity.ok(tyres);
     }
+<<<<<<< Updated upstream
 @PostMapping("/create-booking")
 public ResponseEntity<?> createBooking(@RequestBody Booking booking) {
     Tyre tyre = tyreRepository.findByType(booking.getTyre().getType())
@@ -92,14 +93,16 @@ public ResponseEntity<?> createBooking(@RequestBody Booking booking) {
 //        "amount": 4
 //    }
 //
+=======
+>>>>>>> Stashed changes
 
     @DeleteMapping("/booking/{id}")
-    public ResponseEntity<String> deleteBookingFromDB(@PathVariable Long id){
+    public ResponseEntity<String> deleteBookingFromDB(@PathVariable Long id) {
 
-                bookingService.deleteBooking(id);
+        bookingService.deleteBooking(id);
 
 
-        return ResponseEntity.ok("Booking successful");
+        return ResponseEntity.ok("Delete booking " + id + " successfully");
 
     }
 

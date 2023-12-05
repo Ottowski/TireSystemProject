@@ -4,16 +4,19 @@ import com.example.Grupp9.JwtConfig.JwtUtil;
 import com.example.Grupp9.dto.AuthenticationRequest;
 import com.example.Grupp9.dto.AuthenticationResponse;
 import com.example.Grupp9.dto.UserDto;
+<<<<<<< Updated upstream
 import com.example.Grupp9.model.Booking;
+=======
+import com.example.Grupp9.exception.ExistsEmailException;
+import com.example.Grupp9.exception.InvalidCredentialsException;
+import com.example.Grupp9.exception.NotFoundException;
+>>>>>>> Stashed changes
 import com.example.Grupp9.model.User;
 import com.example.Grupp9.repository.UserRepo;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -45,31 +48,26 @@ public class UserService {
 
 
     public User registerUser(RegistrationUserDto userDto) {
+        existsByUsername(userDto.getUsername());
         User user = new User();
         user.setUsername(userDto.getUsername());
-//        userDto.getRoles().forEach(role -> user.getRoles().add(role));
         user.setRoles(Collections.singletonList(userDto.getRoles()));
         user.setVehicles(userDto.getVehicles());
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         return userRepository.save(user);
     }
 
-    public Optional<User> loginUser(String username, String password) {
-        Optional<User> user = userRepository.findByUsername(username);
-        if (user.isPresent() && passwordEncoder.matches(password, user.get().getPassword())) {
-            return user;
-        }
-        return Optional.empty();
-    }
 
     public void updatePassword(String username, String newPassword) {
         Optional<User> optionalUser = userRepository.findByUsername(username);
+        existsByUsername(username);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             user.setPassword(passwordEncoder.encode(newPassword));
             userRepository.save(user);
         } else {
-            throw new RuntimeException("User not found with username: " + username);
+            throw new NotFoundException("User not found with username: " + username);
+
         }
     }
 
@@ -80,7 +78,7 @@ public class UserService {
             user.setUsername(newUsername);
             userRepository.save(user);
         } else {
-            throw new RuntimeException("User not found with username: " + currentUsername);
+            throw new NotFoundException("User not found with username: " + currentUsername);
         }
     }
 
@@ -96,19 +94,40 @@ public class UserService {
     }
 
     private AuthenticationResponse getAuthenticationResponse(AuthenticationRequest authenticationRequest) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        authenticationRequest.getUsername(),
-                        authenticationRequest.getPassword()
-                )
-        );
-        User user = (User) authentication.getPrincipal();
-        UserDto userDto = new UserDto();
-        userDto.setUsername(user.getUsername());
-        userDto.setRoles(user.getRoles());
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            authenticationRequest.getUsername(),
+                            authenticationRequest.getPassword()
+                    )
+            );
+            User user = (User) authentication.getPrincipal();
+            UserDto userDto = new UserDto();
+            userDto.setUsername(user.getUsername());
+            userDto.setRoles(user.getRoles());
 
-        String jwt = jwtUtil.generateToken(userDto, userDto.getRoles());
-        return new AuthenticationResponse(jwt, userDto);
+            String jwt = jwtUtil.generateToken(userDto, userDto.getRoles());
+            return new AuthenticationResponse(jwt, userDto);
+        } catch (Exception e) {
+            throw new InvalidCredentialsException("Incorrect username or password ");
+        }
+
+    }
+
+
+    private void existsByUsername(String username) {
+        userRepository.findByUsername(username)
+                .ifPresent(user -> {
+                    throw new ExistsEmailException("Email already exists");
+                });
+
+
+    }
+
+    public User getUserById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("User not found with ID: " + id));
+
     }
 
     public User getUserById(Long id) {

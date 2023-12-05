@@ -4,11 +4,15 @@ import com.example.Grupp9.JwtConfig.JwtUtil;
 import com.example.Grupp9.dto.AuthenticationRequest;
 import com.example.Grupp9.dto.AuthenticationResponse;
 import com.example.Grupp9.dto.RegistrationUserDto;
+import com.example.Grupp9.exception.HandleMethodArgumentNotValid;
 import com.example.Grupp9.model.User;
 import com.example.Grupp9.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -92,10 +96,22 @@ public class UserController {
 
     }
 
+<<<<<<< Updated upstream
     @GetMapping("/users/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
         var user = userService.getUserById(id);
         return ResponseEntity.ok().body(user);
+=======
+    @GetMapping("/user/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable String id) {
+        try {
+            Long.parseLong(id);
+            var userById = userService.getUserById(Long.parseLong(id));
+            return ResponseEntity.ok(userById);
+        } catch (NumberFormatException e) {
+            throw new HandleMethodArgumentNotValid("ID IS NOT VALID " + e.getMessage());
+        }
+>>>>>>> Stashed changes
 
     }
 }
