@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>User Profile</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+</head>
+<body>
+<header>
+    <h1>Welcome to Our Booking System</h1>
+    <nav>
+        <ul>
+            <li><a href="/profile">Profile</a></li>
+            <li><a href="/logout">Logout</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main>
+    <section id="user-details">
+        <h2>User Details</h2>
+        <p>Role: [Admin]</p>
+    </section>
+
+    <section id="user-bookings">
+        <h2>Your Bookings</h2>
+        <ul id="user-bookings-list">
+        </ul>
+    </section>
+</main>
+
+<footer>
+    <p>© 2023 Booking System</p>
+</footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('/api/bookings', {
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('jwtToken')
+            }
+        })
+        .then(response => response.json())
+        .then(bookings => {
+            const bookingsList = document.getElementById('user-bookings-list');
+            bookings.forEach(booking => {
+                const listItem = document.createElement('li');
+
+                let bookingDetails = `Booking: ${booking.id}`;
+                if (booking.tyre) {
+                    bookingDetails += `, Type: ${booking.tyre.type}, Amount: ${booking.amount}`;
+                } else {
+                    bookingDetails += `, Tyre information not available`;
+                }
+
+                listItem.textContent = bookingDetails;
+                bookingsList.appendChild(listItem);
+            });
+        })
+        .catch(error => console.error('Error:', error));
+    });
+</script>
+</body>
+</html>

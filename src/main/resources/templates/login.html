@@ -10,7 +10,7 @@
 </div>
 
 <h2>Login Form</h2>
-<form action="login-web" method="post">
+<form onsubmit="handleLogin(event)">
     <div>
         <label for="username">User name:</label>
         <input type="text" id="username" name="username" required>
@@ -26,5 +26,49 @@
 <footer>
     <p>© 2023 Booking System</p>
 </footer>
+
+<script src="css/js/auth-service.js"></script>
+<script>
+    // Funktion för att hantera inloggningsförsök
+    function handleLogin(event) {
+      // Förhindra att formuläret skickas på det traditionella sättet
+      event.preventDefault();
+
+      // Hämta användaruppgifter från dina inloggningsfält
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+
+      // Skapa inloggningsobjektet
+      const loginDetails = {
+        username: username,
+        password: password
+      };
+
+      // Skicka inloggningsförfrågan till backend
+      fetch('/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(loginDetails)
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Login failed');
+        }
+        return response.json();
+      })
+      .then(data => {
+        // Spara token med hjälp av vår auth-service
+        saveToken(data.jwt);
+        // Omdirigera användaren eller uppdatera UI som behövs
+        window.location.href = '/home';
+      })
+      .catch(error => {
+        console.error('Error during login:', error);
+        // Här kan du uppdatera din UI för att visa felmeddelandet
+      });
+    }
+</script>
 </body>
 </html>
