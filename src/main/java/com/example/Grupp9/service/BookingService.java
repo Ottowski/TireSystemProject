@@ -48,7 +48,7 @@ public class BookingService {
             booking.setUser(user);
             booking.setTyre(tyre);
             tyreRepository.save(newTyre);
-            user.getBooking().add(booking);
+            user.addBooking(booking);
         }else {
             throw new HandleMethodArgumentNotValid("We don't have this amount " + book.getAmount());
         }

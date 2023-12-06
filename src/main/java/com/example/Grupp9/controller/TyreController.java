@@ -47,7 +47,15 @@ public class TyreController {
         return tyreService.updateNewTyre(type, tyre);
     }
 
+    @DeleteMapping("/tyres/{type}")
+    public ResponseEntity<String> deleteTyre(@PathVariable String type) {
 
+        tyreService.deleteTyre(type);
+
+
+        return ResponseEntity.ok("Delete tyre " + type + " successfully");
+
+    }
 
 
 }

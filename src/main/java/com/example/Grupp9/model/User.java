@@ -2,12 +2,14 @@ package com.example.Grupp9.model;
 
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,6 +18,7 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 @Entity
+@Builder
 @Table(name = "\"user\"")
 public class User implements UserDetails {
     @Id
@@ -32,16 +35,23 @@ public class User implements UserDetails {
     @ElementCollection
     private List<String> vehicles;
 
-
-
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles;
 
-//    @OneToMany
-//    private List<Tyre> tyres;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Booking> booking;
+    private List<Booking> bookings;
+
+       public User() {
+        }
+    public User(int id, String username, String password, List<String> vehicles, List<String> roles, List<Booking> bookings) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.vehicles = vehicles;
+        this.roles = roles;
+        this.bookings = bookings;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -69,5 +79,23 @@ public class User implements UserDetails {
     }
 
 
+    public void addBooking(Booking booking) {
+        if (this.bookings == null) {
+            this.bookings = new ArrayList<>();
+            bookings.add(booking);
+        }
+        booking.setUser(this);
+    }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", vehicles=" + vehicles +
+                ", roles=" + roles +
+                ", bookings=" + bookings +
+                '}';
+    }
 }

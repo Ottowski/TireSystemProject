@@ -56,7 +56,6 @@ public class UserService {
 
     public void updatePassword(String username, String newPassword) {
         Optional<User> optionalUser = userRepository.findByUsername(username);
-        existsByUsername(username);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             user.setPassword(passwordEncoder.encode(newPassword));

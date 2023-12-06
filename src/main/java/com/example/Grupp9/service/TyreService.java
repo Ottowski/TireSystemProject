@@ -1,21 +1,21 @@
 package com.example.Grupp9.service;
 
+import com.example.Grupp9.exception.NotFoundException;
 import com.example.Grupp9.model.Tyre;
-import com.example.Grupp9.model.User;
 import com.example.Grupp9.repository.TyreRepository;
-import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class TyreService {
-    @Autowired
-    private TyreRepository tyreRepository;
+
+    private final TyreRepository tyreRepository;
+
+    public TyreService(TyreRepository tyreRepository) {
+        this.tyreRepository = tyreRepository;
+    }
 
     public Tyre newTyre(Tyre tyre) {
         // Check if a Tyre with the same type exists
@@ -48,9 +48,9 @@ public class TyreService {
             Tyre tyre1 = tyreOptional.get();
             var addedAmount = tyre.getAmount() + tyre1.getAmount();
 
-            tyre2.setType(tyre.getType());
+            tyre2.setType(tyre1.getType());
             tyre2.setAmount(addedAmount);
-            tyre2.setPrice(tyre.getPrice());
+            tyre2.setPrice(tyre1.getPrice());
         }
 
         return tyreRepository.save(tyre2);
@@ -58,4 +58,9 @@ public class TyreService {
     }
 
 
+    public void deleteTyre(String type) {
+        Tyre tyre = tyreRepository.findByType(type)
+                .orElseThrow(() -> new NotFoundException("Not found this item " + type));
+         tyreRepository.delete(tyre);
+    }
 }
