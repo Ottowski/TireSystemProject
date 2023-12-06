@@ -1,6 +1,7 @@
 package com.example.Grupp9.model;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,7 +9,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-
+@Builder
 @Entity
 @Table(name = "\"tyre\"")
 public class Tyre {
@@ -16,6 +17,8 @@ public class Tyre {
     private String type;
     private int amount;
     private double price;
+
+
     public Tyre() {
     }
 
